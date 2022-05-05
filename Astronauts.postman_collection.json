@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "dc427d78-b790-44cf-9763-a74de023ee46",
+		"name": "Astronauts",
+		"description": "This is a test collection for Astronaut API.\n\nAPI Endpoint : https://spacelaunchnow.me/api/ll/2.2.0/astronaut/\n\nAPI endpoint allows Astronaut to be viewed.\n\nMethod : GET: \nReturn a list of all the existing astronauts.\n\nMODE: \nNormal, List, LaunchList and Detailed /2.2.0/astronaut/?mode=detailed\n\nFILTERS: \nParameters - 'name', 'status', 'nationality', 'agency__name', 'agency__abbrev', 'date_of_birth', 'date_of_death', 'status_ids' Example - /2.2.0/astronaut/?nationality=American\n\nSEARCH EXAMPLE: \n/2.2.0/astronaut/?search=armstrong Searches through name, nationality and agency name\n\nORDERING:\nFields - 'name', 'status', 'date_of_birth' Example - /2.2.0/astronaut/?order=name",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All",
+			"item": [
+				{
+					"name": "list of all astronauts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"//TC01 : To check the status code ",
+									"pm.test(\"TCO1:: GETALL_Verified || status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// TC02 : To check List in response is not empty.",
+									"pm.test(\"TC02:: GETALL_Verified || astronaut count is greater than zero(0) \", function () {",
+									"    pm.expect(response.count).to.greaterThan(0);",
+									"});",
+									"",
+									"//TC03 : To check that header content-type is valid or not",
+									"pm.test(\"TC03:: GETALL_Verified || Headers :: content type is application/json \",function(){",
+									"    //console.log (pm.response.headers.get('Content-Type'))",
+									"    var contenttype = pm.response.headers.get('Content-Type')",
+									"    pm.expect(contenttype).to.eql(\"application/json\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/astronaut/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"astronaut",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get By Mode",
+			"item": [
+				{
+					"name": "refined with mode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"//TC04 : To check the status code",
+									"pm.test(\"TC04:: GetByMODE_Verified || status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//TC05 :: To check API repsonse or astronaut list is categorised according to mode parameter..",
+									"pm.test(\"TC05:: GetByMODE_Verified || API response is according to Mode Type parameter \", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.next).contains(\"mode=detailed\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/astronaut?mode=detailed",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"astronaut"
+							],
+							"query": [
+								{
+									"key": "mode",
+									"value": "detailed",
+									"description": "detailed,list,normal,launchlist"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Filters",
+			"item": [
+				{
+					"name": "By Nationality",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"// TC06:: To check the status code ",
+									"pm.test(\"TC06:: GETbyNationlaity_Verified || status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// TC07:: To check API response is filtered as value mentioned in API",
+									"pm.test(\"TC07:: GETbyNationlaity_Verified || Nationlaity Filter is working\", function () {",
+									"    var counter;",
+									"    if (response.next){ counter = 10;}",
+									"    else { counter = response.count; }",
+									"    console.log(\"counter value is \"+counter)",
+									"    for(i=0;i<counter;i++){",
+									"    pm.expect(response.results[i].nationality).equals(pm.collectionVariables.get(\"fil_nation\"));",
+									"        console.log(pm.collectionVariables.get(\"fil_nation\"));",
+									"        //pm.variables.get(\"nationality\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/astronaut?nationality={{fil_nation}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"astronaut"
+							],
+							"query": [
+								{
+									"key": "nationality",
+									"value": "{{fil_nation}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "byNationality",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"// TC08:: To check the status code ",
+									"pm.test(\"TC06:: search_Verified || status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// TC09:: To check API response is searched/listed as search value mentioned in API",
+									"pm.test(\"TC07:: SearchbyNationlaity_Verified || Nationlaity Filter is working\", function () {",
+									"    var counter;",
+									"    if (response.next){ counter = 10;}",
+									"    else { counter = response.count; }",
+									"    console.log(\"counter value is \"+counter)",
+									"    for(i=0;i<counter;i++){",
+									"    pm.expect(response.results[i].nationality).equals(pm.collectionVariables.get(\"searchBy\"));",
+									"        console.log(pm.collectionVariables.get(\"searchBy\"));",
+									"        //pm.variables.get(\"nationality\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/astronaut?search={{searchBy}} ",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"astronaut"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "{{searchBy}} "
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://spacelaunchnow.me/api/ll/2.2.0"
+		},
+		{
+			"key": "fil_nation",
+			"value": "Australian"
+		},
+		{
+			"key": "searchBy",
+			"value": "Chinese"
+		}
+	]
+}
