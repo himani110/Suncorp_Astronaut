@@ -21,7 +21,7 @@ The _Objective_ is to provide user descriptive steps on how to execute it.
   *To get this project up and running on your local machine for development and testing purposes.* <li> Make sure all prerequisties are met  
 <li> Clone this project on your machine by running  
 
-     git clone 
+     git clone https://github.com/himani110/Suncorp_Astronaut.git
 
 Or you can simply download it from here 
 <li> Open the project contents on your Postman 
