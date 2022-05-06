@@ -44,21 +44,24 @@ Or you can simply download it from here
   Below are the detailed Steps:
   1. Install the Postman tool on you desktop, using below link: https://www.getpostman.com/apps
   2. After successfully installation of Postman, Follow the steps for importing the collection.
-  3. Download the repository from Github to your local system- It has “Astronaut.postman_collection.json” file.
-  4. Go to Home > Import an existing file> upload “Astronaut.postman_collection.json” file
+  3. Download the repository from Github to your local system- It has “Astronauts.postman_collection.json” file.
+  4. Go to Home > Import an existing file> upload “Astronauts.postman_collection.json” file
   5. Execute the collection Using Runner option.
 
   ### Approach 2 :
   
  **Command Line || Using Newman**
   
-  Nemwan is an add-on for Postman.
+  Newman is an add-on for Postman.
   It is a command Line 
   Below are the steps:
   1. Install npm,if not installed.
   2. Open command line or Terminal and install Newman via npm  npm install -g newman
-  3. Run your collection using this command: Newman run astronaut.postman_collection.json
-  [*User is executing the command from the location where json file is exported]
+  3. Run your collection using this command: 
+ 
+ Command :: newman run astronauts.postman_collection.json
+ 
+  [* User is executing the command from the location where json file is exported]
   
 #  Features
   
